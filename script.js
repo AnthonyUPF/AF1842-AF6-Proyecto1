@@ -1,3 +1,4 @@
+/*
 const eventsData = {
     "data": [
         {
@@ -71,6 +72,7 @@ const eventsData = {
         "text": "To keep ReqRes free, contributions towards server costs are appreciated!"
     }
 };
+*/
 
 // Wait for the DOM content to load
   window.addEventListener('DOMContentLoaded', function() {
@@ -87,34 +89,39 @@ const eventsData = {
   titleInput.appendChild(h1);  
 
 
-  // Step 2: Update the card elements with user data
-  eventsData.data.forEach(function(event, index) {
-    if (index > 0) {
-      // Clone the existing card element for additional users
-      const newCard = card.cloneNode(true);
+  fetch('https://f97d27e9-f75d-4bb9-b34c-abf8ffa5461d.mock.pstmn.io/g1/events')
+    .then(response => response.json())
+    .then(data => {
+        const eventsData = data;
+        
+        // Step 2: Update the card elements with user data
+        eventsData.data.forEach(function(event, index) {
+            if (index > 0) {
+                // Clone the existing card element for additional users
+                const newCard = card.cloneNode(true);
 
-      // Select elements within the new card
-      const newImage = newCard.querySelector('.card-img-top');
-      const newTitle = newCard.querySelector('.card-title');
-      const newText = newCard.querySelector('.card-text');
-      const newText2 = newCard.querySelector('.card-text2');
+                // Select elements within the new card
+                const newImage = newCard.querySelector('.card-img-top');
+                const newTitle = newCard.querySelector('.card-title');
+                const newText = newCard.querySelector('.card-text');
+                const newText2 = newCard.querySelector('.card-text2');
 
 
-      // Update the content of the new card
-      newImage.src = event.avatar;
-      newTitle.textContent = event.nombre;
-      newText.textContent = event.fecha + ' (' + event.hora + ') ';
-      newText2.textContent = event.lugar;
+                // Update the content of the new card
+                newImage.src = event.avatar;
+                newTitle.textContent = event.nombre;
+                newText.textContent = event.fecha + ' (' + event.hora + ') ';
+                newText2.textContent = event.lugar;
   
-
-      // Append the new card to the container
-      card.parentNode.appendChild(newCard);
+                // Append the new card to the container
+                card.parentNode.appendChild(newCard);
     
-     } else {
-       // Update the content of the first card
-       image.src = event.avatar;
-       title.textContent = event.nombre;
-       text.textContent = event.fecha + ' (' + event.hora + ') ';
-     }
-  });
+            } else {
+                // Update the content of the first card
+                image.src = event.avatar;
+                title.textContent = event.nombre;
+                text.textContent = event.fecha + ' (' + event.hora + ') ';
+            }
+        });
+    }).catch(error => console.error('Error fetching data:', error));
 });
